@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .page{
+            width: 100%;
+            height: 100%;
+        }
+        .box{
+            width: 50px;
+            height: 50px;
+            border: 1px solid #cccccc;
+        }
+        .setting-warp{
+            display: none;
+        }
+        .setting-warp span{
+            display: inline-block;
+            width: 80px;
+            height: 20px;
+            border: 1px solid red;
+            margin:20px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+    </style>
+    <script>
+        window.onload=function () {
+            var btn=document.getElementsByClassName("btn");
+            var box=document.getElementsByClassName("box");
+            var sw=document.getElementsByClassName("sw");
+            var sh=document.getElementsByClassName("sh");
+            var sc=document.getElementsByClassName("sc");
+            var save=document.getElementsByClassName("save");
+            var cancle=document.getElementsByClassName("cancle");
+            var setting=document.getElementsByClassName("setting-warp");
+
+            btn[0].onclick=settingChangeshow;
+          for (var i=0;i<sw.length;i++){
+                sw[i].onclick=function (i) {
+                    return function(){
+                        changeWidth(sw[i].innerHTML);
+                    }
+                }(i);
+            }
+            for (var i=0;i<sh.length;i++){
+                sh[i].onclick=function (i) {
+                    return function(){
+                        changeHeight(sh[i].innerHTML);
+                    }
+                }(i);
+            }
+            for (var i=0;i<sc.length;i++){
+                sc[i].onclick=function (i) {
+                    return function(){
+                        changeColor(sc[i].innerHTML);
+                    }
+                }(i);
+            }
+            save[0].onclick=settingChangehide
+            cancle[0].onclick=function () {
+                box[0].style.width=50+'px';
+                box[0].style.height=50+'px';
+                box[0].style.backgroundColor='#fff';
+                settingChangehide();
+            }
+            function settingChangeshow() {
+                setting[0].style.display="block";
+            }
+            function settingChangehide() {
+                setting[0].style.display="none";
+            }
+            function changeWidth(value) {
+                box[0].style.width=value;
+            }
+
+
+            function changeHeight(value) {
+                box[0].style.height=value;
+            }
+            function changeColor(value) {
+                box[0].style.backgroundColor=value;
+            }
+            function saveChange(){
+
+            }
+            function cancleChange(){
+
+            }
+        }
+    </script>
+</head>
+<body>
+   <div class="page">
+       <p>请设计下图div的样式<button class="btn">点击设置</button></p>
+       <div class="box"></div>
+       <div class="setting-warp">
+           <div class="set-width">修改宽度<span class="sw sw1">100px</span><span class="sw sw2">200px</span><span class="sw sw3">300px</span></div>
+           <div class="set-height">修改高度<span class="sh sh1">100px</span><span class="sh sh2">200px</span><span class="sh sh3">300px</span></div>
+           <div class="set-color">修改背景色<span class="sc sc1">red</span><span class="sc sc2">yellow</span><span class="sc sc3">blue</span></div>
+            <button class="save">保存</button>
+           <button class="cancle">取消</button>
+
+       </div>
+   </div>
+</body>
+</html>

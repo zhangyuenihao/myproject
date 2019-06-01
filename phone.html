@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模拟手机发送短信</title>
+    <style>
+        .warp{
+            position: relative;
+            width: 288px;
+            height: 594px;
+            background: url("./src/assets/image/phone-icon.png");
+        }
+        .content{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            width: 240px;
+            height: 420px;
+        }
+        .main{
+            width: 235px;
+            height: 372px;
+            margin: 0 auto;
+            vertical-align: middle;
+        }
+        .user-msg{
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .user1{
+            justify-content:flex-end;
+        }
+        .main .msg-icon{
+            flex:30px;
+            width: 30px;
+            height: 30px;
+        }
+        .msg{
+            line-height: 30px;
+            border-radius: 5px;
+            margin:0 10px;
+            padding: 0 10px;
+        }
+        .message1{
+            background: green;
+
+        }
+        .message2{
+            background-color: grey;
+
+        }
+
+        .bottom{
+            height: 50px;
+            line-height: 50px;
+        }
+        .img-icon{
+            display: inline-block;
+            width: 30px;
+            height: 34px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .user{
+            margin-left: 4px;
+        }
+        p{
+            margin: 0;
+        }
+        img{
+            vertical-align: middle;
+        }
+        .message{
+            vertical-align: middle;
+            width: 130px;
+            padding: 5px 0 5px 5px;
+            outline: none;
+            border: none;
+        }
+        .enter{
+            margin-left: 5px;
+            outline: none;
+            border: none;
+            background-color: #fff;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+    </style>
+    <script>
+        window.onload=function () {
+            var main=document.getElementsByClassName("main");
+            var user=document.getElementsByClassName("user");
+            var message=document.getElementsByClassName("message");
+            var enter=document.getElementsByClassName("enter");
+            var on=true;
+
+
+            function addStr() {
+                if(on){
+                    var str='<div class="user1 user-msg"><p class="message1 msg">'+message[0].value+'</p><span class="mgs-icon"><img src="./src/assets/image/user1.png" class="user1-icon"></span></div>';
+
+                }else{
+                    var str='<div class="user2 user-msg"><span class="mgs-icon"><img src="./src/assets/image/user2.png" class="user2-icon"></span><p class="message2 msg">'+message[0].value+'</p></div>'
+                }
+
+                main[0].innerHTML+=str;
+                message[0].value='';
+            }
+            function userChange() {
+                if(on){
+                    user[0].src='./src/assets/image/user2.png';
+                    on=false;
+                }else{
+                    user[0].src='./src/assets/image/user1.png';
+                    on=true;
+                }
+                message[0].value='';
+            }
+
+            enter[0].onclick=addStr;
+            user[0].onclick=userChange;
+
+        }
+    </script>
+</head>
+<body>
+    <div class="warp">
+        <div class="content">
+            <div class="main">
+
+            </div>
+            <div class="bottom">
+                <span class="img-icon">
+                    <img src="./src/assets/image/user1.png" alt="" class="user">
+                </span>
+                <input class="message" type="text" value=''/>
+                <button class="enter">发送</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

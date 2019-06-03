@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>判断qq号码</title>
+</head>
+<body>
+<div class="warp">
+    <span>请输入qq号码</span>
+    <input type="text">
+    <input type="button" value="请判断">
+    <p></p>
+    <!--
+    1、有没有输入
+    2、输入的是不是数字
+    3、不能有0在前面
+    4、不能是小数
+    5、输入的数字必须在5位以上、10位以内
+    -->
+</div>
+<script>
+    window.onload = function () {
+        var input = document.getElementsByTagName('input');
+        var p = document.getElementsByTagName('p')[0]
+        var value
+
+        input[1].onclick = function () {
+            value = input[0].value
+            console.log(typeof (value));
+            if (value == ''){
+                p.innerHTML = '您没有输入'
+            } else if (value != ''&&isNaN(value)) {
+                p.innerHTML = '您输入的不是数字'
+            }else if(value.charAt(0)=='0'){
+                p.innerHTML = '不能有0在前面'
+            }else if(value.length<=5||value.length>=10){
+                p.innerHTML = '输入的数字必须在5位以上、10位以内'
+
+            }else {
+                p.innerHTML = '您输入正确'
+            }
+            console.log(value);
+            console.log(value.length)
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>浮动的图片</title>
+    <style>
+        .warp{
+            width: 800px;
+            height: 400px;
+            margin: 100px auto;
+        }
+        .item{
+            position: relative;
+            float: left;
+            margin-right: 60px;
+            list-style: none;
+            width: 60px;
+            height: 100px;
+            background-image:url("./src/assets/image/img1.jpg");
+            background-size:cover ;
+        }
+        .icon{
+            position: absolute;
+            top: -80px;
+            left: 50px;
+            width:200px;
+            height: 100px;
+            background-image: url("./src/assets/image/fimg.png");
+            background-size:cover ;
+            display: none;
+            z-index: 99;
+        }
+
+
+    </style>
+    <script>
+        window.onload=function () {
+            var item=document.getElementsByClassName('item');
+            var icon=document.getElementsByClassName('icon');
+
+            for(var i=0;i<item.length;i++){
+                item[i].style.backgroundImage="url('./src/assets/image/img"+(i+1)+".jpg')";
+
+                item[i].onmousemove=function () {
+                    this.getElementsByClassName("icon")[0].style.display="block";
+                }
+
+                item[i].onmouseout=function () {
+                    this.getElementsByClassName("icon")[0].style.display="none";
+                }
+            }
+
+        }
+    </script>
+</head>
+<body>
+<ul class="warp">
+    <li class="item">
+        <div class="icon"></div>
+    </li>
+    <li class="item">
+        <div class="icon"></div>
+    </li>
+    <li class="item">
+        <div class="icon"></div>
+    </li>
+    <li class="item">
+        <div class="icon"></div>
+    </li>
+    <li class="item">
+        <div class="icon"></div>
+    </li>
+    <li class="item">
+        <div class="icon"></div>
+    </li>
+    <li class="item">
+        <div class="icon"></div>
+    </li>
+    <li class="item">
+        <div class="icon"></div>
+    </li>
+    <li class="item">
+        <div class="icon"></div>
+    </li>
+    <li class="item">
+        <div class="icon"></div>
+    </li>
+    <li class="item">
+        <div class="icon"></div>
+    </li>
+    <li class="item">
+        <div class="icon"></div>
+    </li>
+</ul>
+</body>
+</html>

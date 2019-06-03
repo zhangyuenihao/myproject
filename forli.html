@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自动生成100个li逢10降一行</title>
+    <style>
+        .warp{
+            width: 610px;
+            height: 700px;
+            margin: 100px auto;
+            overflow: hidden;
+        }
+        .box{
+            position: relative;
+            width: 610px;
+            height: 610px;
+            overflow: hidden;
+            background: pink;
+            padding: 0;
+
+        }
+        li{
+            position: absolute;
+            list-style: none;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            border: 1px solid black;
+        }
+    </style>
+    <script>
+        window.onload=function () {
+            var btn=document.getElementsByClassName("btn");
+            var oUl=document.getElementsByTagName("ul");
+            var oLi=document.getElementsByTagName("li");
+            var str='';
+            var arrColor=['red','yellow','blue','green'];
+            var onOff=true;
+            function setting() {
+                if(onOff){
+                    for(var i=0;i<100;i++){
+                        str+='<li>'+(i+1)+'</li>';
+                    }
+                    oUl[0].innerHTML=str;
+                    for(var i=0;i<oLi.length;i++){
+                        oLi[i].style.left=10+i%10*60+'px';
+                        oLi[i].style.top=Math.floor(i/10)*60+'px';
+                        oLi[i].style.backgroundColor=arrColor[i%arrColor.length];
+                    }
+                    onOff=false;
+                }
+
+            }
+            btn[0].onclick=setting;
+        }
+    </script>
+</head>
+<body>
+    <div class="warp">
+        <input type="button" value="点击生成li" class="btn"/>
+        <ul class="box">
+
+        </ul>
+    </div>
+
+</body>
+</html>

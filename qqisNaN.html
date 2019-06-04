@@ -27,16 +27,17 @@
         input[1].onclick = function () {
             value = input[0].value
             console.log(typeof (value));
-            if (value == ''){
+            if (value == '') {
                 p.innerHTML = '您没有输入'
-            } else if (value != ''&&isNaN(value)) {
+            } else if (value != '' && isNaN(value)) {
                 p.innerHTML = '您输入的不是数字'
-            }else if(value.charAt(0)=='0'){
+            } else if (value.charAt(0) == '0') {
                 p.innerHTML = '不能有0在前面'
-            }else if(value.length<=5||value.length>=10){
+            } else if (value.length <= 5 || value.length >= 10) {
                 p.innerHTML = '输入的数字必须在5位以上、10位以内'
-
-            }else {
+            } else if (parseInt(value)!=parseFloat(value)) {
+                p.innerHTML = '您输入的不能带小数'
+            } else {
                 p.innerHTML = '您输入正确'
             }
             console.log(value);

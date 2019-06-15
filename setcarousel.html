@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片自动切换</title>
+    <style>
+        .warp {
+            width: 600px;
+            height: 400px;
+            box-shadow: 0 0 10px #000;
+            margin: 100px auto;
+            /*    overflow: hidden;*/
+            border: 5px solid red;
+
+        }
+
+        .content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .list {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 600px;
+            height: 400px;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            list-style: none;
+            width: 600px;
+            height: 400px;
+            position: absolute;
+            top: 0;
+            left: 600px;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .info {
+            position: absolute;
+            height: 100px;
+            bottom: -100px;
+            left: 0;
+            width: 600px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+            line-height: 20px;
+        }
+
+        .title {
+            margin-left: 10px;
+        }
+
+        .text {
+            text-indent: 2em;
+            overflow: hidden;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            const dataArray = [{
+                img: './assets/image/1.jpg',
+                title: '漂亮的美女',
+                text: '可垃圾分类设计费莱克斯顿记录卡减肥了解老司机零售价分离圣诞节分离式的会计法律可视对讲六十多级老司机地方'
+            }, {
+                img: './assets/image/2.jpg',
+                title: '可爱妹妹',
+                text: '你好你好记录卡减肥了解老司机零售价分离圣诞节分离式的会计法律可视对讲六十多级老司机地方'
+            }, {
+                img: './assets/image/3.jpg',
+                title: '图片三',
+                text: '笨蛋笨蛋莱克斯顿记录卡减肥了解老司机零售价分离圣诞节分离式的会计法律可视对讲六十多级老司机地方'
+            }, {
+                img: './assets/image/4.jpg',
+                title: '图片四',
+                text: 'test'
+            }]
+            let content = document.getElementsByClassName('content')[0]
+            let list = document.getElementsByClassName('list')[0]
+            let oLi = document.getElementsByTagName('li')
+            let info = document.getElementsByClassName('info')[0]
+            let title = document.getElementsByClassName('title')[0]
+            let text = document.getElementsByClassName('text')[0]
+            let num = 0
+            let arr = []
+
+            function getStyle(obj, attr) {
+                if (getComputedStyle) {
+                    return window.getComputedStyle(obj)[attr]
+                } else {
+                    return obj.currentstyle[attr]
+                }
+            }
+
+            function doMove(obj, attr, dir, target, callback) {
+                dir = parseInt(getStyle(obj, attr)) < target ? dir : -dir
+                clearInterval(obj.timer)
+                obj.timer = setInterval(function () {
+                    let speed = parseInt(getStyle(obj, attr)) + dir
+                    if (speed > target && dir > 0 || speed < target & dir < 0) {
+                        speed = target
+                        clearInterval(obj.timer)
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                    obj.style[attr] = speed + 'px'
+                }, 30)
+            }
+
+            function getElement(tag, cls) {
+                let node = document.createElement(tag)
+                node.className = cls
+                return node
+            }
+
+            function renderList() {
+                let fragment = document.createDocumentFragment()
+                dataArray.forEach((item, index) => {
+                    let li = getElement('li', 'item')
+                    let img = getElement('img', 'image')
+                    li.appendChild(img)
+                    fragment.appendChild(li)
+                    arr.push(li)
+                    img.src = './src/assets/image/' + (index + 1) + '.jpg'
+                    title.innerHTML = item.title
+                    text.innerText = item.text
+                })
+                list.appendChild(fragment)
+                return arr
+            }
+
+            function bindEvent() {
+
+                function bindImg() {
+                    let timer = null
+                    clearInterval(timer)
+                    timer = setInterval(function () {
+                        if (num < arr.length) {
+                            console.log(num)
+                            doMove(arr[num], 'left', 20, -600, function () {})
+                            doMove(arr[num+1], 'left', 20, 0, function () {
+                                   bindInfo()
+
+                            })
+                            num++
+                            console.log(num)
+                            if (num==arr.length-1){
+                                num=0
+                            }
+                        }
+
+
+
+
+                    }, 2000)
+                }
+
+                bindImg()
+
+                function bindInfo() {
+                    let timer2 = null
+                    let onOff=true
+                    clearInterval(timer2)
+                    timer = setInterval(function () {
+                        onOff=!onOff
+                        if (onOff){
+                            doMove(info, 'bottom', 30, 0)
+                        }else{
+                            doMove(info, 'bottom', 30, -100)
+                        }
+                    }, 20)
+                }
+
+            }
+
+            function init() {
+                arr = renderList()
+                arr[num].style.left = 0
+                bindEvent()
+            }
+
+            init()
+        }
+    </script>
+</head>
+<body>
+<div class="warp">
+    <div class="content">
+        <ul class="list">
+            <li><img src="" alt=""></li>
+        </ul>
+        <div class="info">
+            <h3 class="title"></h3>
+            <p class="text"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

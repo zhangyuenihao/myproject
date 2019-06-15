@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>点击加分效果</title>
+    <style>
+        .warp {
+            position: relative;
+            margin: 100px auto;
+            padding: 5px;
+            width: 472px;
+            height: 150px;
+            box-shadow: 0 0 4px #ccc;
+        }
+
+        .main {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            right: 5px;
+            height: 50px;
+            line-height: 50px;
+            border: 1px solid black;
+        }
+
+        .bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0px;
+            background: #10F7EF;
+            opacity: 100;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            list-style: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: 24px;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            opacity: 1;
+
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            let main = document.getElementsByClassName('main')[0]
+            let list = document.getElementsByClassName('list')[0]
+            let bg = document.getElementsByClassName('bg')[0]
+            let len = 8
+            let oLi = document.getElementsByTagName('li')
+            let num = 0
+            let timer = null
+
+            function getStyle(obj, attr) {
+                if (getComputedStyle) {
+                    return window.getComputedStyle(obj)[attr]
+                } else {
+                    return obj.currentstyle[attr]
+                }
+            }
+
+            function domove(obj, attr, dir, target, callback) {
+                let timer3 = null
+                dir = parseInt(getStyle(obj, attr)) < target ? dir : -dir
+                clearInterval(timer3)
+                timer3 = setInterval(function () {
+                    let speed = parseInt(getStyle(obj, attr)) + dir
+                    if (speed > target && dir > 0 || speed < target & dir < 0) {
+                        speed = target
+                    }
+                    obj.style[attr] = speed + 'px'
+                    if (speed == target) {
+                        clearInterval(timer3)
+                        if (callback) {
+                            callback()
+                        }
+                    }
+                }, 60)
+
+
+            }
+
+            function opacity(obj, attr, dir, target, callback) {
+                dir = parseFloat(getStyle(obj, attr)) < target ? dir : -dir
+                clearInterval(obj.timer)
+                obj.timer = setInterval(function () {
+                    let speed = parseFloat(getStyle(obj, attr)) + dir
+
+                    if (speed > target && dir > 0 || speed < target & dir < 0) {
+                        speed = target
+                    }
+                    obj.style[attr] = speed
+                    if (speed == target) {
+                        clearInterval(obj.timer)
+                        if (callback) {
+                            callback()
+                        }
+                    }
+
+                }, 100)
+            }
+
+            function renderList() {
+                for (let i = 0; i < len; i++) {
+                    list.innerHTML += '<li>+1</li>'
+                    oLi[i].style.left = i * 60 + 'px'
+                }
+            }
+
+            function init() {
+                renderList()
+                function click() {
+                    clearInterval(timer)
+
+                    timer = setInterval(function () {
+                        if (num < oLi.length) {
+                            domove(oLi[num], 'top', 15, -100, function () {
+                                opacity(oLi[num], 'opacity', 0.1, 0.1,function() {
+                                    main.onmouseenter = function () {
+                                        if (num == oLi.length&&oLi[num-1].style.opacity==0.1) {
+                                            num = 0
+                                            let timer2 = null
+                                            clearInterval(timer2)
+                                            clearInterval(timer)
+                                            timer2 = setInterval(function () {
+                                                    oLi[num].style.top = 0 + 'px'
+                                                    oLi[num].style.opacity = 1
+                                                    bg.style.width = 0 + 'px'
+                                                    bg.style.opacity = 1
+                                                    num++
+                                                    onOff=true
+                                                    if (num == oLi.length) {
+                                                        clearInterval(timer2)
+                                                        clearInterval(timer)
+                                                        if(num == oLi.length){
+
+                                                                main.onclick = function () {
+
+                                                                    num=0
+                                                                    click()
+                                                                }
+
+
+                                                        }
+
+                                                    }
+                                            }, 10)
+                                        }
+                                    }
+                                })
+                            }(num))
+
+                            if (parseInt(getStyle(bg, 'width')) < parseInt(getStyle(main, 'width'))) {
+                                bg.style.width = num * num * 20 + 'px'
+                                if (parseInt(getStyle(bg, 'width')) > parseInt(getStyle(main, 'width'))) {
+                                    bg.style.width = getStyle(main, 'width')
+                                    opacity(bg, 'opacity', 0.1, 0)
+                                }
+                            }
+                            num++
+                            if (num == oLi.length) {
+                                clearInterval(timer)
+
+                            }
+                        }
+                    }, 100)
+                }
+
+                main.onclick = click
+            }
+
+            init()
+        }
+    </script>
+</head>
+<body>
+<div class="warp">
+    <div class="main">
+        <div class="bg"></div>
+        <ul class="list">
+
+        </ul>
+    </div>
+</div>
+</body>
+</html>

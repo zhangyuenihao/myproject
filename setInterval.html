@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>方块反复掉落循环</title>
+    <style>
+        body {
+            position: relative;
+        }
+
+        .item {
+            position: absolute;
+            top: 250px;
+            width: 50px;
+            height: 50px;
+            background: red;
+            text-align: center;
+            line-height: 50px;
+            color: #ffffff;
+
+
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            let body = document.body
+            let oItem = document.getElementsByClassName('item')
+            let len = 20
+            let timer = null
+            let num = 0
+            let str
+            let onOff = false
+
+            function rander() {
+                for (let i = 0; i < len; i++) {
+                    body.innerHTML += '<div class="item">' + i + '</div>'
+                    oItem[i].style.left = i * 60 + 'px'
+                }
+            }
+
+            rander()
+
+            /**
+             * 获取元素的属性
+             * @param obj
+             * @param attr
+             * @returns {string}
+             */
+            function getStyle(obj, attr) {
+                if (window.getComputedStyle) {
+                    return window.getComputedStyle(obj, null)[attr];
+                }
+                return obj.currentStyle[attr];
+            }
+
+
+            function doMove(obj, attr, dir, target, callback) {
+                dir = parseInt(getStyle(obj, attr)) < target ? dir : -dir
+                clearInterval(obj.timer)
+                obj.timer = setInterval(function () {
+                    let speed = parseInt(getStyle(obj, attr)) + dir
+                    if (speed > target && dir > 0 || speed < target & dir < 0) {
+                        speed = target
+                        clearInterval(obj.timer)
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                    obj.style[attr] = speed + 'px'
+
+                }, 30)
+
+            }
+
+            function move(target, attr) {
+                clearInterval(timer);
+                timer = setInterval(function () {
+                    if (num < len) {
+                        doMove(oItem[num], 'top', 25, target, function () {
+
+                            document.onclick = function () {
+                                console.log(num)
+                                if (num == len) {
+                                    num = 0
+                                    onOff = !onOff
+                                    if (onOff) {
+                                        move(500, 'top')
+                                    } else {
+                                        move(0, 'top')
+                                    }
+                                }
+                                ;
+                            }
+                        })
+                        num++;
+                        if (num == len) {
+                            clearInterval(timer)
+                        }
+                    }
+                }, 100);
+
+            }
+
+            document.onclick = function () {
+                move(0, 'top')
+            };
+        }
+    </script>
+</head>
+<body>
+<div class="warp">
+
+</div>
+</body>
+</html>

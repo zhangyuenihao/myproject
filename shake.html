@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片抖动</title>
+    <style>
+        img {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: 200px;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            let oImg = document.getElementsByTagName('img')
+            let onOff=true
+
+            function getStyle(obj, attr) {
+                if (getComputedStyle) {
+                    return window.getComputedStyle(obj)[attr]
+                } else {
+                    return obj.currentStyle[attr]
+                }
+            }
+
+            function shake(obj, attr,pos, callback) {
+                let arr = []
+                let num = 0
+
+                for (let i = 20; i > 0; i -= 2) {
+                    arr.push(i, -i)
+                }
+                clearInterval(obj.timer)
+                obj.timer = setInterval(function () {
+                    obj.style[attr] = pos + arr[num] + 'px'
+                    num++
+                    if (num == arr.length) {
+                        clearInterval(obj.timer)
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                }, 30)
+
+            }
+
+
+
+
+
+            function init() {
+
+                for (let i = 0; i < oImg.length; i++) {
+                    let pos=parseInt(getStyle(oImg[i],'top'))
+                    oImg[i].style.left = i * 110 + 'px'
+                    oImg[i].onmousemove = function () {
+                        shake(this, 'top',pos)
+                    }
+                }
+            }
+
+            init()
+
+        }
+
+
+    </script>
+</head>
+<body>
+<img src="./src/assets/image/img1.jpg" alt="">
+<img src="./src/assets/image/img2.jpg" alt="">
+<img src="./src/assets/image/img3.jpg" alt="">
+<img src="./src/assets/image/img4.jpg" alt="">
+<img src="./src/assets/image/img5.jpg" alt="">
+<img src="./src/assets/image/img6.jpg" alt="">
+<img src="./src/assets/image/img7.jpg" alt="">
+<img src="./src/assets/image/img8.jpg" alt="">
+</body>
+</html>

@@ -72,7 +72,7 @@
                 text: '迷迷哥哥你真帅'
             }, {
                 img: './assets/image/2.jpg',
-                title: '可爱妹妹',
+                title: '图片二',
                 text: '迷迷哥哥你真帅'
             }, {
                 img: './assets/image/3.jpg',
@@ -93,6 +93,7 @@
             let arr = []
 
             function getStyle(obj, attr) {
+                console.log(obj)
                 if (getComputedStyle) {
                     return window.getComputedStyle(obj)[attr]
                 } else {
@@ -109,7 +110,7 @@
                         speed = target
                         clearInterval(obj.timer)
                         if (callback) {
-                            callback();
+                            callback(obj);
                         }
                     }
                     obj.style[attr] = speed + 'px'
@@ -131,8 +132,7 @@
                     fragment.appendChild(li)
                     arr.push(li)
                     img.src = './src/assets/image/' + (index + 1) + '.jpg'
-                    title.innerHTML = item.title
-                    text.innerText = item.text
+                    li.style.left = '600px'
                 })
                 list.appendChild(fragment)
                 return arr
@@ -144,40 +144,37 @@
                     let timer = null
                     clearInterval(timer)
                     timer = setInterval(function () {
-                        if (num < arr.length) {
-                            console.log(num)
-                            doMove(arr[num], 'left', 20, -600, function () {})
-                            doMove(arr[num+1], 'left', 20, 0, function () {
-                                   bindInfo()
+                        const nextIndex = num >= arr.length - 1 ? 0 : num + 1;
+                        doMove(arr[num], 'left', 20, -600, function (obj) {
 
-                            })
-                            num++
-                            console.log(num)
-                            if (num==arr.length-1){
-                                num=0
-                            }
-                        }
+                          doMove(obj, 'left', 600, 600)
+                        })
+                        doMove(arr[nextIndex], 'left', 20, 0, function (obj) {
+                            title.innerHTML = dataArray[num].title
+                            text.innerText = dataArray[num].text
+                            bindInfo()
+                        })
+                        num = nextIndex;
 
 
 
-
-                    }, 2000)
+                    }, 4000)
                 }
 
                 bindImg()
 
                 function bindInfo() {
                     let timer2 = null
-                    let onOff=true
+                    let onOff = true
                     clearInterval(timer2)
                     timer = setInterval(function () {
-                        onOff=!onOff
-                        if (onOff){
+                        onOff = !onOff
+                        if (onOff) {
                             doMove(info, 'bottom', 30, 0)
-                        }else{
+                        } else {
                             doMove(info, 'bottom', 30, -100)
                         }
-                    }, 20)
+                    }, 2000)
                 }
 
             }

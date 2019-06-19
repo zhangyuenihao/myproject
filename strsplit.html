@@ -160,7 +160,7 @@
                      * */
                     sBtn[num].onclick = function () {
                         let value = searchText[num].value
-                        let value2=replaceText.value
+                        let value2 = replaceText.value
                         if (value == '') {
                             alert('您输入为空')
                         } else if (str.indexOf(value) == -1) {
@@ -216,7 +216,19 @@
                         tab(this.index)
                     }
                 }
+                cancle.onclick = function () {
+                    let value = searchText[num].value
+                    let value2 = replaceText.value
+                    if (replaceText) {
+                        value = ''
+                        value2 = ''
+                    } else {
+                        value = ''
+                    }
+                    inputWarp.style.display = 'none'
+                }
             }
+
             bindEvent()
         }
 

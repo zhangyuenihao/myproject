@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查找替换删除</title>
+    <style>
+        .warper {
+            width: 600px;
+            height: 500px;
+            position: relative;
+            background: #EFEFE7;
+            box-shadow: 5px -10px 10px #555555;
+            margin: 100px auto;
+        }
+
+        .main {
+            position: absolute;
+            top: 50px;
+            left: 20px;
+            width: 450px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 10;
+            overflow: hidden;
+            background: #ffffff;
+            padding: 10px;
+        }
+
+        .btn-warp {
+            position: absolute;
+            top: 40px;
+            right: 24px;
+        }
+
+        .btn {
+            display: block;
+            width: 80px;
+            height: 35px;
+            line-height: 35px;
+            border-bottom: 1px solid #ffffff;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .open {
+            background: #94948C;
+        }
+
+        .open:hover, .open.active {
+            background: #808080;
+            color: #ffffff;
+        }
+
+        .sr {
+            display: none;
+        }
+
+        .sl-btn {
+            background: #C0C0C0;
+        }
+
+        .sl-btn:hover, .sl-btn.active {
+            background: #E76308;
+            color: #ffffff;
+        }
+
+        .input-warp {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 410px;
+            height: 110px;
+            padding: 20px;
+            background: #E7E7B5;
+            border: 10px solid #E71063;
+            display: none;
+        }
+
+        .nav {
+            line-height: 35px;
+            height: 35px;
+            border-bottom: 2px solid #E73100;
+        }
+
+        .tab {
+            display: inline-block;
+            width: 80px;
+            height: 100%;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background: #E73100;
+            color: #ffffff;
+        }
+
+        .cancle {
+            display: inline-block;
+            position: absolute;
+            top: 0px;
+            right: 10px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .inputs {
+            line-height: 80px;
+            display: none;
+        }
+
+        input[type='text'] {
+            width: 150px;
+            height: 24px;
+        }
+
+        button {
+            height: 28px;
+        }
+
+        .select {
+            display: inline-block;
+            background: yellow;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            let main = document.getElementsByClassName('main')[0]
+            let open = document.getElementsByClassName('open')[0]
+            let sr = document.getElementsByClassName('sr')[0]
+            let oBtn = document.getElementsByClassName('sl-btn')
+            let oTab = document.getElementsByClassName('tab')
+            let inputWarp = document.getElementsByClassName('input-warp')[0]
+            let sBtn = document.getElementsByClassName('sbtn')
+            let searchText = document.getElementsByClassName('search-text')
+            let replaceText = document.getElementsByClassName('replace-text')[0]
+            let cancle = document.getElementsByClassName('cancle')[0]
+            let inputs = document.getElementsByClassName('inputs')
+            let onOff = true
+            let num = 0
+            let oldcur
+
+            oldcur = oTab[num]
+            oldcur.classList.add('active')
+            inputs[num].style.display = 'block'
+
+            function bindEvent() {
+                function tab(index) {
+                    let str = main.innerHTML
+                    if (oldcur.classList.contains('active')) {
+                        oldcur.classList.remove('active')
+                        inputs[num].style.display = 'none'
+                    }
+                    oTab[index].classList.add('active')
+                    inputs[index].style.display = 'block'
+                    num = index
+                    oldcur = oTab[index]
+                    /**
+                     * 提交效果
+                     * */
+                    sBtn[num].onclick = function () {
+                        let value = searchText[num].value
+                        let value2=replaceText.value
+                        if (value == '') {
+                            alert('您输入为空')
+                        } else if (str.indexOf(value) == -1) {
+                            alert('您输入的"' + value + '"不存在')
+                        } else {
+                            let arr = str.split(searchText[num].value)
+                            if (replaceText) {
+                                let nStr = arr.join(value2)
+                                main.innerHTML = nStr
+                            } else {
+                                let nStr = arr.join('<span class="select">' + value + '</span>')
+                                main.innerHTML = nStr
+                            }
+
+
+                        }
+
+                    }
+                }
+
+                /**
+                 * 展开按钮点击效果
+                 */
+                open.onclick = function () {
+                    if (onOff) {
+                        open.classList.add('active')
+                        sr.style.display = 'block'
+                    } else {
+                        open.classList.remove('active')
+                        sr.style.display = 'none'
+                    }
+                    onOff = !onOff
+                }
+                /**
+                 * btn按钮点击效果
+                 */
+                for (let i = 0; i < oBtn.length; i++) {
+                    oBtn[i].index = i
+                    oBtn[i].onclick = function () {
+                        open.classList.remove('active')
+                        sr.style.display = 'none'
+                        inputWarp.style.display = 'block'
+                        tab(this.index)
+                    }
+
+                }
+                /**
+                 * tab切换效果
+                 */
+                for (let i = 0; i < oTab.length; i++) {
+                    oTab[i].index = i
+                    oTab[i].onclick = function () {
+                        tab(this.index)
+                    }
+                }
+            }
+            bindEvent()
+        }
+
+
+    </script>
+</head>
+<body>
+<div class="warper">
+    <div class="main">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+        Ab accusamus alias blanditiis consectetur culpa deserunt doloremque ducimus
+        ea enim explicabo incidunt inventore ipsa itaque laboriosam magnam magni modi,
+        molestiae necessitatibus nemo neque nesciunt officia quod repellendus sapiente
+        sint sit temporibus unde! sit amet, consectetur adipisicing elit.
+        Ab accusamus alias blanditiis consectetur culpa deserunt doloremque ducimus
+        ea enim exp
+
+
+    </div>
+    <div class="btn-warp">
+        <span class="btn open">展开</span>
+        <div class="sr">
+            <span class="btn sl-btn search-btn">查找</span>
+            <span class="btn sl-btn replace-btn">替换</span>
+        </div>
+    </div>
+    <div class="input-warp">
+        <div class="nav">
+            <span class="tab search ">查找</span>
+            <span class="tab replace">替换</span>
+
+        </div>
+        <span class="cancle">x</span>
+        <div class="inputs">
+            <input type="text" class="search-text">
+            <button class="sbtn">查找</button>
+        </div>
+        <div class="inputs">
+            <input type="text" class="search-text">
+            <input type="text" class="replace-text">
+            <button class="sbtn">替换</button>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

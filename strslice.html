@@ -54,12 +54,12 @@
             background: #C65218;
             opacity: 1;
         }
+
         .count {
             display: inline-block;
             width: 100%;
             margin-top: 10px;
         }
-
 
 
         ul {
@@ -70,19 +70,26 @@
         li {
             list-style: none;
         }
-        .list{
+
+        .list {
             padding: 10px;
-         text-align: center;
+            text-align: center;
+            overflow: hidden;
+            opacity: 0;
         }
-        .circle{
+
+        .circle {
             display: inline-block;
             width: 10px;
             height: 10px;
-            background:#E7A521;
+            background: #E7A521;
+            margin: 0 2px;
         }
-        .circle.active{
+
+        .circle.active {
             background: #FF4A52;
         }
+
         .text {
             flex: 2;
             height: 220px;
@@ -92,27 +99,113 @@
 
     </style>
     <script>
-        window.onload=function () {
-            let textarea=document.getElementsByClassName('input-warp')[0]
-            let btn=document.getElementsByClassName('btn')[0]
-            let count=document.getElementsByClassName('count')[0]
-            let list=document.getElementsByClassName('list')[0]
-            let text=document.getElementsByClassName('text')[0]
-            let num=0
-            let timer=null
-            let str=textarea.innerHTML
-            function randerList(){
-                for(let i=0;i<str.length;i++){
+        window.onload = function () {
+            let textarea = document.getElementsByClassName('input-warp')[0]
+            let btn = document.getElementsByClassName('btn')[0]
+            let count = document.getElementsByClassName('count')[0]
+            let list = document.getElementsByClassName('list')[0]
+            let text = document.getElementsByClassName('text')[0]
+            let circle = document.getElementsByClassName('circle')
 
-                    list.innerHTML+='<li class="circle"></li>'
+            let timer = null
+            let oldcircle
+
+
+            /**
+             * 获取元素的属性
+             * @param obj
+             * @param attr
+             * @returns {string}
+             */
+            function getStyle(obj, attr) {
+                if (window.getComputedStyle) {
+                    return window.getComputedStyle(obj, null)[attr];
+                }
+                return obj.currentStyle[attr];
+            }
+
+
+            function doMove(obj, attr, unit, dir, target, callback) {
+                dir = parseFloat(getStyle(obj, attr)) < target ? dir : -dir
+                clearInterval(obj.timer)
+                obj.timer = setInterval(function () {
+                    let speed = parseFloat(getStyle(obj, attr)) + dir
+                    if ((speed > target && dir > 0) || (speed < target & dir < 0)) {
+                        speed = target
+                        clearInterval(obj.timer)
+                        if (callback) {
+                            callback(obj)
+                        }
+                    }
+                    obj.style[attr] = speed + unit
+
+                }, 100)
+            }
+
+
+            function randerList() {
+                for (let i = 0; i < 8; i++) {
+
+                    list.innerHTML += '<li class="circle"></li>'
                 }
             }
-            btn.onclick=function () {
-                clearInterval(timer)
-                timer=setInterval(function () {
-                    num++
-                },100)
+
+
+            function bindEvent() {
+                let onOff = true
+
+                btn.onclick = function () {
+                    if (!onOff) {
+                        return
+                    }
+                    if (onOff) {
+                        let str = textarea.value
+                        let num = 0
+                        let n = 0
+                        if (str == '') {
+                            return
+                        }
+                        doMove(list, 'opacity', '', 0.1, 1)
+                        doMove(btn, 'opacity', '', 0.1, 0.5)
+                        clearInterval(timer)
+                        timer = setInterval(function () {
+                            onOff = false
+                            if (n > 7) {
+                                n = 0
+                            }
+                            oldcircle.classList.remove('active')
+                            circle[n].classList.add('active')
+                            oldcircle = circle[n]
+                            n++
+                            num++
+                            count.innerHTML = num + '/' + str.length
+                            textarea.value = str.slice(num)
+                            text.innerHTML = str.slice(0, num - str.length)
+                            if (num == str.length) {
+                                clearInterval(timer)
+                                textarea.innerHTML = ''
+                                text.innerHTML = str
+                                doMove(list, 'opacity', '', 0.1, 0)
+                                doMove(btn, 'opacity', '', 0.1, 1)
+                                onOff=true
+                            }
+
+                        }, 30)
+                    }
+                }
+
+
             }
+
+            function init() {
+                randerList()
+                oldcircle = circle[0]
+                oldcircle.classList.add('active')
+
+                bindEvent()
+            }
+
+            init()
         }
     </script>
 </head>
@@ -120,22 +213,13 @@
 <div class="warper">
     <div class="main">
 
-        <textarea class="input-warp">
-            打开萨芬极乐世界Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, animi autem commodi, corporis cumque dignissimos earum, magni minus nisi non placeat quae saepe sapiente sint sit veritatis voluptatem voluptates voluptatum.
-        </textarea>
+        <textarea class="input-warp">打开萨芬极乐世界</textarea>
 
         <div class="middle">
             <button class="btn">把文字右移</button>
             <span class="count">0/0</span>
             <ul class="list">
-                <li class="circle active"></li>
 
-                <li class="circle"></li>
-                <li class="circle"></li>
-                <li class="circle"></li>
-                <li class="circle"></li>
-                <li class="circle"></li>
-                <li class="circle"></li>
             </ul>
         </div>
         <div class="text">

@@ -167,8 +167,11 @@
                             alert('您输入的"' + value + '"不存在')
                         } else {
                             let arr = str.split(searchText[num].value)
-                            if (replaceText) {
-                                let nStr = arr.join(value2)
+                            if (num == 1) {
+                                if(value2==''){
+                                    alert('请输入要替换的值')
+                                }
+                                let nStr = arr.join('<span class="select">' + value2 + '</span>')
                                 main.innerHTML = nStr
                             } else {
                                 let nStr = arr.join('<span class="select">' + value + '</span>')

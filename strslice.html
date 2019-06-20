@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文字搬运工</title>
+    <style>
+        .warper {
+            width: 1000px;
+            height: 242px;
+            margin: 100px auto;
+            border: 10px solid #E7EFF7;
+            box-shadow: 0 0 5px #555;
+            background: #C0C0C0;
+            padding: 10px;
+        }
+
+        .main {
+            display: flex;
+
+            background: #fff;
+            padding: 10px;
+        }
+
+        .input-warp {
+            height: 220px;
+            flex: 2;
+            background: #EFEFD6;
+            border: 1px dotted #000000;
+            outline: none;
+            resize: none
+        }
+
+
+        .middle {
+            flex: 1;
+            text-align: center;
+
+        }
+
+        .btn {
+
+            background: none;
+            outline: none;
+            border: none;
+            background-color: #F76300;
+            height: 40px;
+            line-height: 40px;
+            color: #ffffff;
+            cursor: pointer;
+            width: 130px;
+        }
+
+        .btn:hover, .btn.active {
+            background: #C65218;
+            opacity: 1;
+        }
+        .count {
+            display: inline-block;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+
+
+        ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            list-style: none;
+        }
+        .list{
+            padding: 10px;
+         text-align: center;
+        }
+        .circle{
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background:#E7A521;
+        }
+        .circle.active{
+            background: #FF4A52;
+        }
+        .text {
+            flex: 2;
+            height: 220px;
+            border: 1px dotted #000000;
+            background: #63EFF7;
+        }
+
+    </style>
+    <script>
+        window.onload=function () {
+            let textarea=document.getElementsByClassName('input-warp')[0]
+            let btn=document.getElementsByClassName('btn')[0]
+            let count=document.getElementsByClassName('count')[0]
+            let list=document.getElementsByClassName('list')[0]
+            let text=document.getElementsByClassName('text')[0]
+            let num=0
+            let timer=null
+            let str=textarea.innerHTML
+            function randerList(){
+                for(let i=0;i<str.length;i++){
+
+                    list.innerHTML+='<li class="circle"></li>'
+                }
+            }
+            btn.onclick=function () {
+                clearInterval(timer)
+                timer=setInterval(function () {
+                    num++
+                },100)
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="warper">
+    <div class="main">
+
+        <textarea class="input-warp">
+            打开萨芬极乐世界Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, animi autem commodi, corporis cumque dignissimos earum, magni minus nisi non placeat quae saepe sapiente sint sit veritatis voluptatem voluptates voluptatum.
+        </textarea>
+
+        <div class="middle">
+            <button class="btn">把文字右移</button>
+            <span class="count">0/0</span>
+            <ul class="list">
+                <li class="circle active"></li>
+
+                <li class="circle"></li>
+                <li class="circle"></li>
+                <li class="circle"></li>
+                <li class="circle"></li>
+                <li class="circle"></li>
+                <li class="circle"></li>
+            </ul>
+        </div>
+        <div class="text">
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

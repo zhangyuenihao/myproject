@@ -179,18 +179,17 @@
                             n++
                             num++
                             count.innerHTML = num + '/' + str.length
-                            textarea.value = str.slice(num)
-                            text.innerHTML = str.slice(0, num - str.length)
+                            textarea.value = str.slice(num,str.length)
+                            text.innerHTML = str.slice(0,-str.length+num)
                             if (num == str.length) {
                                 clearInterval(timer)
-                                textarea.innerHTML = ''
                                 text.innerHTML = str
                                 doMove(list, 'opacity', '', 0.1, 0)
                                 doMove(btn, 'opacity', '', 0.1, 1)
                                 onOff=true
                             }
 
-                        }, 30)
+                        }, 1000)
                     }
                 }
 

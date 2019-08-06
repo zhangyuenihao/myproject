@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>快按钮</title>
+    <style>
+        body{
+            height: 8000px;
+            background: url('./images/body.png') no-repeat center top;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .inner_c{
+            width: 960px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .part1{
+            width: 152px;
+            height: 57px;
+            background: url('./images/icon2.png') no-repeat 0 0;
+            position: absolute;
+            top: 210px;
+            left: 610px;
+            z-index: 5;
+        }
+        .part2{
+            width: 132px;
+            height: 352px;
+            background: url('./images/icon2.png') no-repeat -14px -64px;
+            position: absolute;
+            top: 266px;
+            left: 623px;
+        }
+        .part3{
+            width: 121px;
+            height: 175px;
+            background: url('./images/icon2.png') no-repeat -18px -416px;
+            position: absolute;
+            top: 600px;
+            left: 626px;
+        }
+        .part4{
+            width: 119px;
+            height: 255px;
+            background: url(images/icon2.png) no-repeat -160px -94px;
+            position: absolute;
+            top: 286px;
+            left: 785px;
+        }
+        .unit{
+            display: none;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+
+<div class="inner_c">
+    <div id="part1" class="klick part1" data-top0="210" data-left0="610" data-top1="251" data-left1="610"  data-top2="311" data-top3="338"></div>
+    <div id="part2" class="klick part2" data-top0="266" date-left0="623" data-top1="289" date-left1="623"  data-top2="351" data-top3="388"></div>
+    <div id="part3" class="klick part3" data-top0="600" date-left0="626" data-top1="600" date-left1="626"></div>
+    <div id="part4" class="klick part4" data-top0="286" data-left0="785" data-top1="286" data-left1="620" data-top2="345" data-top3="370"></div>
+    <img id="unit" class="unit" src="images/icon1.png" />
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    //函数节流
+    var lock = true;
+    //1表示的是打开状态，2表示合上的状态，3表示已经被unit替换了 , 4表示已经到产品介绍这个位置了 , 5就是插入到手机里面了
+    var state = 1;
+
+    $(window).scroll(function(){
+        //锁没有打开，那么就不再继续执行
+        if(!lock){
+            return;
+        }
+
+        var A = $(window).scrollTop();
+
+        //如果卷动值超过一定的数字，那么执行动画
+        if(A > 100  && state == 1){
+            //此时有动画了，我们要把锁关上：
+            lock = false;
+            //合上的动画：
+            $(".klick").each(function(){
+                //每个元素都运动到他的终点，比如它没有left值，那么就不动，就相当于运动到自己的当前位置。
+                $(this).animate({
+                    "top"  : $(this).attr("data-top1") ? $(this).attr("data-top1") : $(this).css("top") ,
+                    "left" : $(this).attr("data-left1") ? $(this).attr("data-left1") : $(this).css("left")
+                },600,function(){
+                    $(this).animate({
+                        "top"  : $(this).attr("data-top2") ? $(this).attr("data-top2") : $(this).css("top") ,
+                        "left" : $(this).attr("data-left2") ? $(this).attr("data-left2") : $(this).css("left")
+                    },400,function(){
+                        $(this).animate({
+                            "top"  : $(this).attr("data-top3") ? $(this).attr("data-top3") : $(this).css("top") ,
+                            "left" : $(this).attr("data-left3") ? $(this).attr("data-left3") : $(this).css("left")
+                        },400,function(){
+                            lock = true;
+                            state = 2;
+                        });
+                    });
+                });
+            });
+        }else if(A < 100 && state == 2){
+            //此时有动画了，我们要把锁关上：
+            lock = false;
+            $(".klick").each(function(){
+                //每个元素都运动到他的终点，比如它没有left值，那么就不动，就相当于运动到自己的当前位置。
+                $(this).animate({
+                    "top"  : $(this).attr("data-top2") ? $(this).attr("data-top2") : $(this).css("top") ,
+                    "left" : $(this).attr("data-left2") ? $(this).attr("data-left2") : $(this).css("left")
+                },600,function(){
+                    $(this).animate({
+                        "top"  : $(this).attr("data-top1") ? $(this).attr("data-top1") : $(this).css("top") ,
+                        "left" : $(this).attr("data-left1") ? $(this).attr("data-left1") : $(this).css("left")
+                    },400,function(){
+                        $(this).animate({
+                            "top"  : $(this).attr("data-top0") ? $(this).attr("data-top0") : $(this).css("top") ,
+                            "left" : $(this).attr("data-left0") ? $(this).attr("data-left0") : $(this).css("left")
+                        },400,function(){
+                            lock = true;
+                            state = 1;
+                        });
+                    });
+                });
+            });
+        }else if(A > 200 && state == 2){
+            //函数节流
+            lock = false;
+            $(".klick").stop(true,true);
+            $(".klick").hide();
+            //组合体显示，位置和part1相同
+            $("#unit").show().css({
+                "top" : $(".part1").css("top"),
+                "left" : $(".part1").css("left"),
+            }).animate({
+                "top" : 600,
+                "left" : 450,
+                "width" : 60
+            },1000,function(){
+                state = 3;
+                lock = true;
+            });
+        }else if(A > 350 && state == 3){
+            //函数节流
+            lock = false;
+
+            $("#unit").animate({
+                "top" : 1100
+            },1000,function(){
+                state = 4;
+                lock = true;
+            })
+        }else if(A > 900 && state == 4){
+            lock = false;
+
+            $("#unit").animate({
+                "top" : 1852,
+                "left" : 90,
+                "width" : 29
+            },600,function(){
+                state = 5;
+                lock = true;
+            });
+        }else if(A < 900 && state == 5){
+            lock = false;
+
+            $("#unit").animate({
+                "top" : 1100,
+                "left" : 450,
+                "width" : 60
+            },400,function(){
+                state = 4;
+                lock = true;
+            });
+        }else if(A < 300 && state == 4){
+            lock = false;
+
+            $("#unit").animate({
+                "left" : 610,
+                "top" : 210
+            },500,function(){
+
+                //组合体消失
+                $(this).hide();
+                $(".klick").each(function(){
+                    $(this).show().css({
+                        "top" : $(this).attr("data-top1"),
+                        "left" : $(this).attr("data-left1")
+                    });
+                });
+
+                state = 2;
+                lock = true;
+            });
+        }
+    });
+</script>
+</body>
+</html>

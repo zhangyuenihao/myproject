@@ -14,7 +14,7 @@
     <script>
         window.onload = function () {
             let oImg = document.getElementsByTagName('img')
-            let onOff=true
+            let onOff = true
 
             function getStyle(obj, attr) {
                 if (getComputedStyle) {
@@ -24,7 +24,7 @@
                 }
             }
 
-            function shake(obj, attr,pos, callback) {
+            function shake(obj, attr, pos, callback) {
                 let arr = []
                 let num = 0
 
@@ -45,17 +45,13 @@
 
             }
 
-
-
-
-
             function init() {
 
                 for (let i = 0; i < oImg.length; i++) {
-                    let pos=parseInt(getStyle(oImg[i],'top'))
+                    let pos = parseInt(getStyle(oImg[i], 'top'))
                     oImg[i].style.left = i * 110 + 'px'
                     oImg[i].onmousemove = function () {
-                        shake(this, 'top',pos)
+                        shake(this, 'top', pos)
                     }
                 }
             }
